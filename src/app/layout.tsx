@@ -5,6 +5,8 @@ import { Inter } from 'next/font/google'
 
 import FollowBar from '@/components/layout/FollowBar'
 import Sidebar from '@/components/layout/Sidebar'
+import LoginModal from '@/components/modals/LoginModal'
+import RegisterModal from '@/components/modals/RegisterModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,6 +19,8 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <html lang="ja">
       <body className={inter.className}>
+        <RegisterModal />
+        <LoginModal />
         <div className="h-screen bg-black">
           <div className="container h-full mx-auto xl:px-30 max-w-6xl">
             <div className="grid grid-cols-4 h-full">
