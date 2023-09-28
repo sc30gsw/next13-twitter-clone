@@ -2,6 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Toaster } from 'react-hot-toast'
 
 import FollowBar from '@/components/layout/FollowBar'
 import Sidebar from '@/components/layout/Sidebar'
@@ -19,6 +20,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <html lang="ja">
       <body className={inter.className}>
+        <Toaster />
         <RegisterModal />
         <LoginModal />
         <div className="h-screen bg-black">
