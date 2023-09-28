@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -17,10 +18,11 @@ const LoginModal = () => {
   const registerModal = useRegisterModal()
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginForm>({ resolver: zodResolver(schema) })
+    control,
+    setError,
+    formState: { isSubmitting },
+  } = useForm<LoginForm>({ resolver: zodResolver(schema), defaultValues: { email: '', password: '' } })
 
   const onToggle = useCallback(() => {
     if (isSubmitting) return
@@ -32,25 +34,51 @@ const LoginModal = () => {
   const onSubmit = useCallback(
     async (data: LoginForm) => {
       try {
-        // TODO ADD LOG IN
+        const result = await signIn('credentials', {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+          callbackUrl: '/',
+        })
+
+        if (result?.error) {
+          switch (result.error) {
+            case 'Email does not exists':
+              setError('email', {
+                type: 'manual',
+                message: 'Email does not exist.',
+              })
+              break
+
+            case 'User does not exists':
+              setError('password', {
+                type: 'manual',
+                message: 'User does not exists',
+              })
+              break
+
+            case 'Incorrect password':
+              setError('password', {
+                type: 'manual',
+                message: 'Incorrect password.',
+              })
+              break
+          }
+          return
+        }
 
         loginModal.onClose()
       } catch (err) {
         toast.error('Something went wrong')
       }
     },
-    [loginModal],
+    [loginModal, setError],
   )
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Input {...register('email')} placeholder="Email" disabled={isSubmitting} error={errors.email?.message} />
-      <Input
-        {...register('password')}
-        placeholder="Password"
-        disabled={isSubmitting}
-        error={errors.password?.message}
-      />
+      <Input name="email" control={control} placeholder="Email" type="email" disabled={isSubmitting} />
+      <Input name="password" control={control} placeholder="Password" type="password" disabled={isSubmitting} />
     </div>
   )
 
