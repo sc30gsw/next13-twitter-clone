@@ -1,7 +1,5 @@
 import z from 'zod'
 
-const IMAGE_TYPES = ['image/jpeg', 'image/png']
-
 export const schema = z.object({
   name: z.string().min(1, 'required'),
   username: z.string().min(8, 'please enter at least 8 characters'),
