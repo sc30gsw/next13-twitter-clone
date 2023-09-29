@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
+import ImageUpload from '@/components/ImageUpload'
 import Input from '@/components/Input'
 import Modal from '@/components/Modal'
 import useCurrentUser from '@/hooks/useCurrentUser'
@@ -30,6 +31,8 @@ const EditModal = () => {
       name: '',
       username: '',
       bio: '',
+      profileImage: '',
+      coverImage: '',
     },
   })
 
@@ -39,6 +42,8 @@ const EditModal = () => {
         name: currentUser.name,
         username: currentUser.username,
         bio: currentUser.bio,
+        profileImage: currentUser.profileImage,
+        coverImage: currentUser.coverImage,
       })
     }
   }, [currentUser, reset])
@@ -93,6 +98,8 @@ const EditModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
+      <ImageUpload name="profileImage" control={control} disabled={isSubmitting} label="Upload profile image" />
+      <ImageUpload name="coverImage" control={control} disabled={isSubmitting} label="Upload cover image" />
       <Input name="name" control={control} placeholder="Name" disabled={isSubmitting} />
       <Input name="username" control={control} placeholder="Username" disabled={isSubmitting} />
       <Input name="bio" control={control} placeholder="Bio" disabled={isSubmitting} />
