@@ -8,7 +8,6 @@ const serverAuth = async (req: NextRequest) => {
   const session = await getServerSession(options)
 
   if (!session) throw new Error('Not signed in')
-  console.log('OK')
 
   const currentUser = await prisma.user.findUnique({
     where: {
@@ -17,7 +16,6 @@ const serverAuth = async (req: NextRequest) => {
   })
 
   if (!currentUser) throw new Error('Not signed in')
-  console.log('OK SIGE')
 
   return { currentUser }
 }
