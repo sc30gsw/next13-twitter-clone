@@ -31,6 +31,7 @@ const Input = <T extends FieldValues>({
       {label && <p className="text-xl text-white font-semibold mb-2">{label}</p>}
       <input
         {...field}
+        value={field.value || ''}
         disabled={disabled}
         type={type}
         placeholder={placeholder}

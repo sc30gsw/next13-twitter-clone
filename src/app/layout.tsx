@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast'
 
 import FollowBar from '@/components/layout/FollowBar'
 import Sidebar from '@/components/layout/Sidebar'
+import EditModal from '@/components/modals/EditModal'
 import LoginModal from '@/components/modals/LoginModal'
 import RegisterModal from '@/components/modals/RegisterModal'
 
@@ -23,6 +24,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Toaster />
         <RegisterModal />
         <LoginModal />
+        <EditModal />
         <div className="h-screen bg-black">
           <div className="container h-full mx-auto xl:px-30 max-w-6xl">
             <div className="grid grid-cols-4 h-full">
