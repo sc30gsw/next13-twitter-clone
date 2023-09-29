@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 
 import Input from '@/components/Input'
 import Modal from '@/components/Modal'
+import useCurrentUser from '@/hooks/useCurrentUser'
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import type { LoginForm } from '@/types/LoginInputForm'
@@ -16,11 +17,13 @@ import { schema } from '@/types/LoginInputForm'
 const LoginModal = () => {
   const loginModal = useLoginModal()
   const registerModal = useRegisterModal()
+  const { mutate } = useCurrentUser()
 
   const {
     handleSubmit,
     control,
     setError,
+    reset,
     formState: { isSubmitting },
   } = useForm<LoginForm>({ resolver: zodResolver(schema), defaultValues: { email: '', password: '' } })
 
@@ -67,12 +70,16 @@ const LoginModal = () => {
           return
         }
 
+        toast.success('Login successful')
+
+        mutate()
         loginModal.onClose()
+        reset()
       } catch (err) {
         toast.error('Something went wrong')
       }
     },
-    [loginModal, setError],
+    [loginModal, setError, mutate, reset],
   )
 
   const bodyContent = (
@@ -95,6 +102,7 @@ const LoginModal = () => {
 
   return (
     <Modal
+      type="submit"
       disabled={isSubmitting}
       isOpen={loginModal.isOpen}
       title="Login"
