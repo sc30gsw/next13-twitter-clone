@@ -70,6 +70,8 @@ const LoginModal = () => {
           return
         }
 
+        toast.success('Login successful')
+
         mutate()
         loginModal.onClose()
         reset()
