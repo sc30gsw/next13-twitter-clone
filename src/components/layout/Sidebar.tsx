@@ -17,7 +17,7 @@ const Sidebar = () => {
   const items = [
     { label: 'Home', href: '/', icon: <BsHouseFill /> },
     { label: 'Notifications', href: '/notifications', icon: <BsBellFill />, auth: true },
-    { label: 'Profile', href: '/users/123', icon: <FaUser />, auth: true },
+    { label: 'Profile', href: `/users/${currentUser?.id}`, icon: <FaUser />, auth: true },
   ]
 
   const logout = useCallback(() => signOut(), [])
