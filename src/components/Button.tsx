@@ -3,19 +3,21 @@
 import React from 'react'
 
 type ButtonProps = {
+  type?: 'button' | 'submit' | 'reset'
   label: string
   secondary?: boolean
   fullWidth?: boolean
   large?: boolean
   disabled?: boolean
   outline?: boolean
-  onClick: () => void
+  onClick?: () => void
 }
 
-const Button: React.FC<ButtonProps> = ({ label, secondary, fullWidth, large, disabled, outline, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ type, label, secondary, fullWidth, large, disabled, outline, onClick }) => {
   return (
     <button
       disabled={disabled}
+      type={type}
       onClick={onClick}
       className={`disabled:opacity-70 disabled:cursor-not-allowed rounded-full font-semibold hover:opacity-80 transition border 
         ${fullWidth ? 'w-full' : 'w-fit'} 

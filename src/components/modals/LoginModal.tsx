@@ -100,6 +100,7 @@ const LoginModal = () => {
 
   return (
     <Modal
+      type="submit"
       disabled={isSubmitting}
       isOpen={loginModal.isOpen}
       title="Login"

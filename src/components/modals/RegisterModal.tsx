@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 
 import Input from '@/components/Input'
 import Modal from '@/components/Modal'
+import useCurrentUser from '@/hooks/useCurrentUser'
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import { type RegisterForm, schema } from '@/types/RegisterInputForm'
@@ -15,10 +16,12 @@ import { type RegisterForm, schema } from '@/types/RegisterInputForm'
 const RegisterModal = () => {
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
+  const { mutate } = useCurrentUser()
 
   const {
     handleSubmit,
     control,
+    reset,
     setError,
     formState: { isSubmitting },
   } = useForm<RegisterForm>({
@@ -82,12 +85,14 @@ const RegisterModal = () => {
           callbackUrl: '/',
         })
 
+        mutate()
         registerModal.onClose()
+        reset()
       } catch (err) {
         toast.error('Something went wrong')
       }
     },
-    [registerModal, setError],
+    [mutate, registerModal, reset, setError],
   )
 
   const bodyContent = (
@@ -112,6 +117,7 @@ const RegisterModal = () => {
 
   return (
     <Modal
+      type="submit"
       disabled={isSubmitting}
       isOpen={registerModal.isOpen}
       title="Create an account"

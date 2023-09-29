@@ -6,6 +6,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Button from '@/components/Button'
 
 type ModalProps = {
+  type?: 'button' | 'submit' | 'reset'
   isOpen?: boolean
   title?: string
   actionLabel: string
@@ -16,18 +17,32 @@ type ModalProps = {
   onSubmit: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, title, actionLabel, disabled, body, footer, onClose, onSubmit }) => {
+const Modal: React.FC<ModalProps> = ({
+  type,
+  isOpen,
+  title,
+  actionLabel,
+  disabled,
+  body,
+  footer,
+  onClose,
+  onSubmit,
+}) => {
   const handleClose = useCallback(() => {
     if (disabled) return
 
     onClose()
   }, [disabled, onClose])
 
-  const handleSubmit = useCallback(() => {
-    if (disabled) return
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      if (disabled) return
 
-    onSubmit()
-  }, [disabled, onSubmit])
+      onSubmit()
+    },
+    [disabled, onSubmit],
+  )
 
   if (!isOpen) return null
 
@@ -42,11 +57,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, title, actionLabel, disabled, bod
                 <AiOutlineClose size={20} />
               </button>
             </div>
-            <div className="relative p-10 flex-auto">{body}</div>
-            <div className="flex flex-col gap-2 p-10">
-              <Button disabled={disabled} label={actionLabel} secondary fullWidth large onClick={handleSubmit} />
-              {footer}
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="relative p-10 flex-auto">{body}</div>
+              <div className="flex flex-col gap-2 p-10">
+                <Button type={type} disabled={disabled} label={actionLabel} secondary fullWidth large />
+                {footer}
+              </div>
+            </form>
           </div>
         </div>
       </div>
