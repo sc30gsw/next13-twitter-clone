@@ -1,3 +1,4 @@
+import type { CommentModel } from '@/types/CommentModel'
 import type { UserModel } from '@/types/UserModel'
 
 export type PostModel = {
@@ -5,8 +6,8 @@ export type PostModel = {
   body: string
   createdAt: string
   updatedAt: string
-  userId: string
   likedIds: string[]
   image?: string
   user: UserModel
+  comments: CommentModel[]
 }

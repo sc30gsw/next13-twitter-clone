@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -9,7 +10,6 @@ import Avatar from '@/components/Avatar'
 import Button from '@/components/Button'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useLoginModal from '@/hooks/useLoginModal'
-import usePosts from '@/hooks/usePosts'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import type { PostInputForm } from '@/types/PostInputForm'
 import { schema } from '@/types/PostInputForm'
@@ -25,7 +25,8 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
   const loginModal = useLoginModal()
 
   const { data: currentUser } = useCurrentUser()
-  const { mutate: mutatePosts } = usePosts(postId)
+
+  const router = useRouter()
 
   const {
     register,
@@ -48,13 +49,13 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
 
         toast.success('Tweet Created')
 
-        mutatePosts()
         reset()
+        router.refresh()
       } catch (err) {
         toast.error('Something went wrong')
       }
     },
-    [mutatePosts, reset],
+    [router, reset],
   )
 
   return (
