@@ -7,7 +7,6 @@ const useFetchPost = async (postId: string) => {
     if (!response.ok) throw new Error('Something went wrong')
 
     const res: PostModel = await response.json()
-    console.log('🚀 ~ file: useFetchPost.ts:10 ~ useFetchPost ~ res:', res.user.id)
 
     return res
   } catch (err) {

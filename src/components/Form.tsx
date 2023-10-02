@@ -11,8 +11,8 @@ import Button from '@/components/Button'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
-import type { PostInputForm } from '@/types/PostInputForm'
-import { schema } from '@/types/PostInputForm'
+import type { PostOrCommentInputForm } from '@/types/PostOrCommentInputForm'
+import { schema } from '@/types/PostOrCommentInputForm'
 
 type FormProps = {
   placeholder: string
@@ -34,20 +34,21 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
     reset,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<PostInputForm>({ resolver: zodResolver(schema), defaultValues: { body: '' } })
+  } = useForm<PostOrCommentInputForm>({ resolver: zodResolver(schema), defaultValues: { body: '' } })
 
   const body = watch('body')
 
   const onSubmit = useCallback(
-    async (data: PostInputForm) => {
+    async (data: PostOrCommentInputForm) => {
       try {
-        await fetch('/api/posts', {
+        const url = isComment ? `/api/comments/?postId=${postId}` : '/api/posts'
+        await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ body: data.body }),
         })
 
-        toast.success('Tweet Created')
+        toast.success(isComment ? 'Comment Created' : 'Tweet Created')
 
         reset()
         router.refresh()
@@ -55,7 +56,7 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
         toast.error('Something went wrong')
       }
     },
-    [router, reset],
+    [isComment, postId, reset, router],
   )
 
   return (
