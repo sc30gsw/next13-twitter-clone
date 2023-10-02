@@ -1,5 +1,18 @@
 import type { CommentModel } from '@/types/CommentModel'
-import type { UserModel } from '@/types/UserModel'
+
+type PostUser = {
+  id: string
+  name: string
+  username: string
+  bio?: string
+  email: string
+  image?: string
+  coverImage?: string
+  profileImage?: string
+  createdAt: string
+  updatedAt: string
+  followingIds: string[]
+}
 
 export type PostModel = {
   id: string
@@ -8,6 +21,6 @@ export type PostModel = {
   updatedAt: string
   likedIds: string[]
   image?: string
-  user: UserModel
+  user: PostUser
   comments: CommentModel[]
 }
