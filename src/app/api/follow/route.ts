@@ -51,11 +51,11 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
 
     const updateFollowingIds = [...(user.followingIds || [])]
 
-    updateFollowingIds.filter((followingId) => followingId !== userId)
+    const filterUpdateFollowingIds = updateFollowingIds.filter((followingId) => followingId !== userId)
 
     const updateUser = await prisma.user.update({
       where: { id: currentUser.id },
-      data: { followingIds: updateFollowingIds },
+      data: { followingIds: filterUpdateFollowingIds },
     })
 
     return NextResponse.json({ updateUser }, { status: 200 })
