@@ -23,6 +23,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     updateFollowingIds.push(userId)
 
+    try {
+      await prisma.notification.create({ data: { body: `${currentUser.name} followed you!`, userId } })
+      await prisma.user.update({ where: { id: userId }, data: { hasNotification: true } })
+    } catch (err) {
+      console.log(err)
+    }
+
     const updateUser = await prisma.user.update({
       where: { id: currentUser.id },
       data: { followingIds: updateFollowingIds },

@@ -23,6 +23,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     updateLikedIds.push(currentUser.id)
 
+    try {
+      const post = await prisma.post.findUnique({ where: { id: postId } })
+
+      if (post?.userId) {
+        await prisma.notification.create({
+          data: { body: `${currentUser.name} liked your tweet`, userId: post.userId },
+        })
+        await prisma.user.update({ where: { id: post.userId }, data: { hasNotification: true } })
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     const updatePost = await prisma.post.update({
       where: { id: post.id },
       data: { likedIds: updateLikedIds },

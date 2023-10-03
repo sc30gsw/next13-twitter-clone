@@ -24,6 +24,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       },
     })
 
+    try {
+      const post = await prisma.post.findUnique({ where: { id: postId } })
+
+      if (post?.userId) {
+        await prisma.notification.create({
+          data: { body: `${currentUser.name} replied to your tweet`, userId: post.userId },
+        })
+        await prisma.user.update({ where: { id: post.userId }, data: { hasNotification: true } })
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     return NextResponse.json({ comment }, { status: 201 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
