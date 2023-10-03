@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import Header from '@/components/Header'
+import PostFeed from '@/components/posts/PostFeed'
+import Spinner from '@/components/Spinner'
 import UserBio from '@/components/users/UserBio'
 import UserHero from '@/components/users/UserHero'
 import useFetchUser from '@/hooks/useFetchUser'
@@ -27,8 +29,11 @@ const UserPage = async ({ params }: { params: { userId: string } }) => {
   return (
     <div>
       <Header showBackArrow label={fetchedUser.user.username} />
-      <UserHero userId={fetchedUser.user.id} />
-      <UserBio userId={fetchedUser.user.id} />
+      <Suspense fallback={<Spinner />}>
+        <UserHero userId={fetchedUser.user.id} />
+        <UserBio userId={fetchedUser.user.id} />
+        <PostFeed userId={fetchedUser.user.id} />
+      </Suspense>
     </div>
   )
 }

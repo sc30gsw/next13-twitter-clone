@@ -1,7 +1,6 @@
 import type { CommentModel } from '@/types/CommentModel'
-import type { PostModel } from '@/types/PostModel'
 
-export type UserModel = {
+type PostUser = {
   id: string
   name: string
   username: string
@@ -13,11 +12,15 @@ export type UserModel = {
   createdAt: string
   updatedAt: string
   followingIds: string[]
-  hasNotification?: boolean
-  posts: PostModel[]
-  comments: CommentModel[]
 }
 
-export type CurrentUser = UserModel & {
-  message?: string
+export type PostModel = {
+  id: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  likedIds: string[]
+  image?: string
+  user: PostUser
+  comments: CommentModel[]
 }
