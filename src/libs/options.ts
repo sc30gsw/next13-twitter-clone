@@ -38,6 +38,13 @@ const options: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    session({ session, token, user }) {
+      if (session.user) session.user.id = token.sub as string
+
+      return session
+    },
+  },
   pages: {
     signIn: '/auth/signin',
   },
