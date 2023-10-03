@@ -16,7 +16,13 @@ const Sidebar = () => {
 
   const items = [
     { label: 'Home', href: '/', icon: <BsHouseFill /> },
-    { label: 'Notifications', href: '/notifications', icon: <BsBellFill />, auth: true },
+    {
+      label: 'Notifications',
+      href: '/notifications',
+      icon: <BsBellFill />,
+      auth: true,
+      alert: currentUser?.hasNotification,
+    },
     { label: 'Profile', href: `/users/${currentUser?.id}`, icon: <FaUser />, auth: true },
   ]
 
@@ -28,7 +34,14 @@ const Sidebar = () => {
         <div className="space-y-2 lg:w-[230px]">
           <SidebarLogo />
           {items.map((item) => (
-            <SidebarItem key={item.href} href={item.href} label={item.label} icon={item.icon} auth={item.auth} />
+            <SidebarItem
+              key={item.href}
+              href={item.href}
+              label={item.label}
+              icon={item.icon}
+              auth={item.auth}
+              alert={item.alert}
+            />
           ))}
           {currentUser && !currentUser.message && <SidebarItem onClick={logout} icon={<BiLogOut />} label="Logout" />}
           <SidebarTweetButton />
