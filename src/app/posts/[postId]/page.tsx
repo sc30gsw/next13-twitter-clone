@@ -2,6 +2,7 @@ import React from 'react'
 
 import Form from '@/components/Form'
 import Header from '@/components/Header'
+import CommentFeed from '@/components/posts/CommentFeed'
 import PostItem from '@/components/posts/PostItem'
 import useFetchPost from '@/hooks/useFetchPost'
 import type { PostModel } from '@/types/PostModel'
@@ -23,6 +24,7 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
       <Header label="Tweet" showBackArrow />
       <PostItem data={post} />
       <Form postId={post.id} isComment placeholder="Tweet your reply" />
+      <CommentFeed comments={post.comments || []} />
     </div>
   )
 }

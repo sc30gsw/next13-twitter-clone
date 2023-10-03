@@ -1,0 +1,53 @@
+'use client'
+
+import { formatDistanceToNowStrict } from 'date-fns'
+import { useRouter } from 'next/navigation'
+import React, { useCallback, useMemo } from 'react'
+
+import Avatar from '@/components/Avatar'
+import type { CommentModel } from '@/types/CommentModel'
+
+type CommentItemProps = {
+  data: CommentModel
+}
+
+const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
+  const router = useRouter()
+
+  const goToUser = useCallback(
+    (e: React.MouseEvent<HTMLParagraphElement>) => {
+      e.stopPropagation()
+
+      router.push(`/users/${data.user.id}`)
+    },
+    [data.user.id, router],
+  )
+
+  const createdAt = useMemo(() => {
+    if (!data.createdAt) return null
+
+    return formatDistanceToNowStrict(new Date(data.createdAt))
+  }, [data.createdAt])
+
+  return (
+    <div className="border-b-[1px] border-neutral-800 p-5 cursor-pointer hover:bg-neutral-900 transition">
+      <div className="flex flex-row items-center gap-3">
+        <Avatar userId={data.user.id} />
+        <div>
+          <div className="flex flex-row items-center gap-2">
+            <p onClick={goToUser} className="text-white font-semibold cursor-pointer hover:underline">
+              {data.user.name}
+            </p>
+            <span className="text-neutral-500 cursor-pointer hover:underline hidden md:block">
+              @{data.user.username}
+            </span>
+            <span className="text-neutral-400 text-sm">{createdAt}</span>
+          </div>
+          <div className="text-white mt-1">{data.body}</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default CommentItem
