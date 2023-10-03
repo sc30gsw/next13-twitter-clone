@@ -13,6 +13,7 @@ export type UserModel = {
   createdAt: string
   updatedAt: string
   followingIds: string[]
+  hasNotification?: boolean
   posts: PostModel[]
   comments: CommentModel[]
 }
